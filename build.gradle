@@ -2,12 +2,11 @@ plugins {
     id 'org.springframework.boot' version '2.3.5.RELEASE'
     id 'io.spring.dependency-management' version '1.0.10.RELEASE'
     id 'java'
-    id 'war'
 }
 
 group = 'mimly'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '11'
+sourceCompatibility = '1.8'
 
 configurations {
     compileOnly {
@@ -21,21 +20,33 @@ repositories {
 
 dependencies {
     implementation 'org.apache.commons:commons-lang3'
+    implementation 'org.springframework.boot:spring-boot-starter-aop'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    //implementation 'org.springframework.boot:spring-boot-starter-data-rest'
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
-    implementation 'org.springframework.session:spring-session-core'
+    //implementation 'org.springframework.session:spring-session-core'
+    //implementation 'org.springframework.session:spring-session-jdbc'
+    implementation 'org.springframework.session:spring-session-data-redis'
     compileOnly 'org.projectlombok:lombok'
-    runtimeOnly 'com.h2database:h2'
     annotationProcessor 'org.projectlombok:lombok'
-    providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    runtimeOnly 'com.h2database:h2'
+    runtimeOnly 'org.springframework.boot:spring-boot-starter-tomcat'
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
-    exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
     testImplementation 'org.springframework.security:spring-security-test'
 }
 
 test {
     useJUnitPlatform()
+}
+
+bootRun {
+    systemProperties 'spring.output.ansi.enabled': 'always'
+    //systemProperties 'logging.pattern.console': '%clr(%d{yy-MM-dd E HH:mm:ss}) %clr(%-5p) %clr(>>) %clr(%m){faint}%n'
 }

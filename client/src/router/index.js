@@ -1,29 +1,35 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import Home from '../views/Home.vue';
+import AdminView from '../views/Admin.vue';
+import TimesView from '../views/Times.vue';
+import LoginView from '../views/Login.vue';
+import store from '../store';
 
 Vue.use(VueRouter);
 
 const routes = [
-  {
-    path: '/',
-    name: 'Home',
-    component: Home,
-  },
-  {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue'),
-  },
+  { path: '/', redirect: '/times' },
+  { path: '/admin', component: AdminView },
+  { path: '/times', component: TimesView },
+  { path: '/login', component: LoginView },
 ];
 
 const router = new VueRouter({
-  mode: 'history',
+  mode: 'hash',
   base: process.env.BASE_URL,
   routes,
+});
+
+router.beforeEach((to, from, next) => {
+  if (from.path === '/login') {
+    store.commit('resetAuthMessage');
+  }
+
+  if (store.getters.isAuthenticated || to.path === '/login' || to.path === '/times') {
+    next();
+  } else {
+    next('/login');
+  }
 });
 
 export default router;
