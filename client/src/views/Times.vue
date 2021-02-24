@@ -22,14 +22,12 @@
         </template>
 
         <b-list-group class="row">
-          <b-list-group-item class="my-2" v-show="!$store.getters.isConnected" variant="info">
-            <h5 class="my-2 article-6 text-center">
-              Please wait while connecting...
-              <b-icon class="ml-3" icon="circle-fill" animation="throb"></b-icon>
-            </h5>
+          <b-list-group-item :class="['my-2', {'connecting': !$store.getters.isConnected}]"
+            v-show="!$store.getters.isConnected" variant="warning">
+            <h5 class="my-2 article-6 text-center">Please wait while connecting...</h5>
           </b-list-group-item>
 
-          <transition-group name="fade">
+          <transition-group name="fade" mode="out-in">
             <Time v-show="$store.getters.isConnected" v-for="time of times" :key="time.id"
               :id="time.id" @reserve="reserve(time)">
             </Time>
@@ -95,11 +93,11 @@ export default {
     this.$store.commit('setModal', this.$bvModal);
   },
   methods: {
-    async reserve(time) {
+    reserve(time) {
       this.chosenTime = time;
       this.$store.commit('setLoading', true);
       // to simulate network latency...
-      await (() => new Promise((resolve) => setTimeout(resolve, 2000)))();
+      // await (() => new Promise((resolve) => setTimeout(resolve, 2000)))();
       this.socket.send('/app/ws-api/v1/make-reservation', {}, JSON.stringify(time));
     },
     cancel() {
@@ -111,3 +109,16 @@ export default {
   },
 };
 </script>
+
+<style lang="scss">
+@keyframes connecting
+{
+  0% { opacity: 0.6; }
+  30% { opacity: 1.0; }
+  100% { opacity: 0.6; }
+}
+.connecting
+{
+  animation: connecting 3.6s infinite;
+}
+</style>

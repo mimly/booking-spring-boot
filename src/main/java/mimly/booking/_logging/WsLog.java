@@ -14,6 +14,7 @@
 //@Aspect
 //@Component
 //@Slf4j(topic = WS_LOG_TOPIC)
+//@Slf4j
 //public class WsLog {
 //
 //    @Pointcut("@annotation(org.springframework.messaging.handler.annotation.MessageMapping)")

@@ -9,6 +9,7 @@
 //
 //@Component
 //@Slf4j(topic = EVENT_LOG_TOPIC)
+//@Slf4j
 //public class EventLog {
 //
 //    @EventListener

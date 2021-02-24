@@ -64,7 +64,8 @@ export default {
   }),
   methods: {
     login() {
-      this.$store.commit('resetAuthMessage');
+      const { commit, dispatch } = this.$store;
+      commit('resetAuthMessage');
 
       fetch('/login', {
         method: 'POST',
@@ -75,11 +76,11 @@ export default {
         body: `username=${this.username}&password=${this.password}`,
       }).then(({ url }) => {
         if (url.match(/^(http|https):\/\/.*\/login\?error$/gi)) {
-          this.$store.commit('setAuthMessage', { message: 'Bad credentials', variant: 'danger' });
+          commit('setAuthMessage', { message: 'Bad credentials', variant: 'danger' });
           return;
         }
 
-        this.$store.dispatch('isAuthenticated', { router: this.$router });
+        dispatch('isAuthenticated');
       }).catch(console.error);
     },
   },

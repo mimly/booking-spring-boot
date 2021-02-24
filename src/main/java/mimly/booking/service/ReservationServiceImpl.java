@@ -14,10 +14,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.*;
 
-import static mimly.booking.config.AddressBook.Topic.RESERVATION_SERVICE_TOPIC;
-
 @Service
-@Slf4j(topic = RESERVATION_SERVICE_TOPIC)
+@Slf4j
 public class ReservationServiceImpl implements ReservationService {
 
     private final AssistantRepository assistantRepository;

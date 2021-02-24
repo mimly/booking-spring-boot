@@ -18,6 +18,7 @@
 //@Aspect
 //@Component
 //@Slf4j(topic = LOG_TOPIC)
+//@Slf4j
 //public class LogAspect {
 //
 //    @Value

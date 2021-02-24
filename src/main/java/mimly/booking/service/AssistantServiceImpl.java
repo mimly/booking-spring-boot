@@ -7,18 +7,19 @@ import mimly.booking.model.dto.AdditionDTO;
 import mimly.booking.model.repository.AssistantRepository;
 import mimly.booking.model.repository.TimeSlotRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.security.Principal;
 import java.util.Optional;
 
-import static mimly.booking.config.AddressBook.Topic.ASSISTANT_SERVICE_TOPIC;
 import static mimly.booking.config.SecurityConfig.ROLE_ASSISTANT;
 
 @Service
-@Slf4j(topic = ASSISTANT_SERVICE_TOPIC)
+@Slf4j
 public class AssistantServiceImpl implements AssistantService {
 
     private final AssistantRepository assistantRepository;
@@ -59,7 +60,7 @@ public class AssistantServiceImpl implements AssistantService {
     public TimeSlot removeTimeSlot(Long id, Principal principal) {
         Optional<TimeSlot> optionalTimeSlot = this.timeSlotRepository.findById(id);
         if (!optionalTimeSlot.isPresent())
-            throw new AccessDeniedException("Time not found");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Time not found");
         TimeSlot removedTimeSlot = optionalTimeSlot.get();
         if (!principal.getName().equals(removedTimeSlot.getAssistant().getUsername()))
             throw new AccessDeniedException("Unauthorized operation");

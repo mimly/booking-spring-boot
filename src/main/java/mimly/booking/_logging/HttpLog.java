@@ -14,6 +14,7 @@
 //@Aspect
 //@Component
 //@Slf4j(topic = HTTP_LOG_TOPIC)
+//@Slf4j
 //public class HttpLog {
 //
 //    @Pointcut("@annotation(org.springframework.web.bind.annotation.GetMapping)")

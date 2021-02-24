@@ -38,7 +38,7 @@
           <div class="col-xs-8 col-sm-6 col-md-4">
             <b-form @submit.prevent="validateAddition() && addTime()">
               <b-form-timepicker class="my-2" v-model="timeToAdd" :state="validateAddition()"
-                menu-class="article-6" now-button reset-button no-close-button>
+                locale="sv" menu-class="article-6" now-button reset-button no-close-button>
               </b-form-timepicker>
               <b-form-invalid-feedback :state="!validateAddition()">
                 <span v-if="!validateTimeFormat()">No time selected</span>
@@ -190,7 +190,7 @@ export default {
           time: this.timeToAdd.substring(0, 5),
         }),
       }).then((res) => {
-        if (!res.ok) res.json().then((payload) => { this.additionError = payload.body; });
+        if (!res.ok) res.json().then(({ message }) => { this.additionError = message; });
       }).catch(console.error);
       this.timeToAdd = null;
     },
@@ -204,7 +204,7 @@ export default {
             'X-XSRF-TOKEN': `${this.$cookies.get('XSRF-TOKEN')}`,
           },
         }).then((res) => {
-          if (!res.ok) res.json().then((payload) => { this.removalError = payload.body; });
+          if (!res.ok) res.json().then(({ message }) => { this.removalError = message; });
         }).catch(console.error);
       });
       this.timesToRemove = null;

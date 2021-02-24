@@ -39,16 +39,10 @@ export default {
   },
   actions: {
     isAuthenticated({ commit }) {
-      fetch('/api/v1/authentication')
-        .then((res) => {
-          if (!res.ok) {
-            commit('authenticate', { authenticated: false, assistant: null });
-            return;
-          }
-
-          res.json().then(({ authenticated, name }) => {
-            commit('authenticate', { authenticated, assistant: name });
-          });
+      return fetch('/api/v1/authentication')
+        .then((res) => res.json())
+        .then(({ authenticated = false, assistant = null }) => {
+          commit('authenticate', { authenticated, assistant });
         }).catch(console.error);
     },
   },

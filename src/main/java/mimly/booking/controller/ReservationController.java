@@ -22,14 +22,13 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 import static mimly.booking.config.AddressBook.APIv1;
-import static mimly.booking.config.AddressBook.Topic.RESERVATION_CONTROLLER_TOPIC;
 import static mimly.booking.config.AddressBook.WS_APIv1;
 import static mimly.booking.config.AddressBook.WebSocketEndpoint.*;
 
 @RestController
 @RequestMapping(APIv1)
 @MessageMapping(WS_APIv1)
-@Slf4j(topic = RESERVATION_CONTROLLER_TOPIC)
+@Slf4j
 public class ReservationController implements ApplicationListener<ReservationExpiredEvent> {
 
     private final ReservationService reservationService;
@@ -88,9 +87,12 @@ public class ReservationController implements ApplicationListener<ReservationExp
         return confirmedTimeSlot;
     }
 
-    @MessageExceptionHandler
+    @MessageExceptionHandler(AccessDeniedException.class)
     @SendToUser(UNICAST_RESERVATION_ENDED)
-    public ResponseEntity<String> handleException(AccessDeniedException accessDeniedException) {
-        return new ResponseEntity<>(accessDeniedException.getMessage(), HttpStatus.FORBIDDEN);
+    public BookingApplicationError handleAccessDeniedException(AccessDeniedException accessDeniedException) {
+        return BookingApplicationError.builder()
+                .httpStatus(HttpStatus.FORBIDDEN)
+                .throwable(accessDeniedException)
+                .build();
     }
 }

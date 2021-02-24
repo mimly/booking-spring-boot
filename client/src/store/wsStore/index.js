@@ -1,16 +1,10 @@
 import SockJS from 'sockjs-client';
 import Stomp from 'stomp-websocket';
 
-const onSessionExpired = (commit, dispatch) => ({ body }) => {
-  const payload = JSON.parse(body);
-
-  if (payload.statusCodeValue === 401) {
-    // only if the expired session was authenticated
-    commit('setAuthMessage', { message: 'Session expired', variant: 'danger' });
-    dispatch('isAuthenticated');
-  }
-
-  dispatch('reconnect');
+const onSessionExpired = (commit, dispatch) => () => {
+  // only if the expired session was authenticated
+  commit('setAuthMessage', { message: 'Session expired', variant: 'danger' });
+  dispatch('isAuthenticated').then(() => dispatch('reconnect'));
 };
 
 const onIncomingReservation = (commit) => ({ headers: { origin }, body }) => {
@@ -39,8 +33,8 @@ const onReservationEnd = (commit, getters) => ({ body }) => {
   getters.modal.hide('alert');
 
   const payload = JSON.parse(body);
-  if (payload.body !== undefined) {
-    commit('setModalTitle', payload.body);
+  if (payload.message !== undefined) {
+    commit('setModalTitle', payload.message);
     getters.modal.show('alert');
   }
 };

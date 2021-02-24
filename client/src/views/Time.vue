@@ -56,14 +56,14 @@ export default {
 }
 .reserved
 {
-  box-shadow: 0.6rem 0.6rem 0.8rem 0 rgba(0, 0, 0, 0.25),
-    -0.4rem -0.4rem 0.6rem 0 rgba(255, 255, 255, 0.3);
+  box-shadow: 0.15rem 0.15rem 0.2rem 0 rgba(0, 0, 0, 0.25),
+    -0.1rem -0.1rem 0.15rem 0 rgba(255, 255, 255, 0.3);
   animation: reserved 3.6s infinite;
 }
 
 .confirmed
 {
-  box-shadow: 0.6rem 0.6rem 0.8rem 0 rgba(0, 0, 0, 0.25),
-    -0.4rem -0.4rem 0.6rem 0 rgba(255, 255, 255, 0.3);
+  box-shadow: 0.15rem 0.15rem 0.2rem 0 rgba(0, 0, 0, 0.25),
+    -0.1rem -0.1rem 0.15rem 0 rgba(255, 255, 255, 0.3);
 }
 </style>

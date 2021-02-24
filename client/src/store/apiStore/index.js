@@ -36,7 +36,11 @@ export default {
       store.loading = loading;
     },
     setTimes(store, times) {
-      store.times = times.sort((a, b) => a.time > b.time);
+      store.times = times.sort((a, b) => {
+        if (a.time > b.time) return 1;
+        if (a.time < b.time) return -1;
+        return 0;
+      });
     },
     updateTime(store, time) {
       const index = store.times.findIndex(({ id }) => id === time.id);
@@ -44,7 +48,11 @@ export default {
     },
     addTime(store, time) {
       store.times.push(time);
-      store.times.sort((a, b) => a.time > b.time);
+      store.times.sort((a, b) => {
+        if (a.time > b.time) return 1;
+        if (a.time < b.time) return -1;
+        return 0;
+      });
     },
     removeTime(store, time) {
       const index = store.times.findIndex(({ id }) => id === time.id);

@@ -16,7 +16,6 @@
             </b-dropdown-item>
           </b-nav-item-dropdown>
           <b-nav-item href="#" @click="redirect('/times')">Time Slots</b-nav-item>
-          <b-nav-item href="#" disabled>Disabled</b-nav-item>
         </b-navbar-nav>
 
         <!-- Right aligned nav items -->
@@ -38,7 +37,8 @@
   <br><br>
   ...
   <br><br>
-  For more detailed lab instructions, please visit <i><a href="#">Canvas site</a></i>!
+  For more detailed lab instructions, please visit the
+  <i><a href="https://kth.instructure.com/courses/21342/assignments/137566">Canvas site</a></i>!
 </p>
             </Info>
           </b-nav-item>
@@ -52,7 +52,9 @@
       </b-collapse>
     </b-navbar>
 
-    <router-view></router-view>
+    <transition name="fade" mode="out-in">
+      <router-view></router-view>
+    </transition>
   </div>
 </template>
 
@@ -102,11 +104,26 @@ export default {
         },
       }).then(() => {
         commit('setAuthMessage', { message: 'Signed out successfully', variant: 'success' });
-        dispatch('isAuthenticated');
-
-        dispatch('reconnect');
+        dispatch('isAuthenticated').then(() => dispatch('reconnect'));
       }).catch(console.error);
     },
   },
 };
 </script>
+
+<style lang="scss">
+@keyframes fade-in
+{
+  0% { opacity: 0.0; }
+  30% { opacity: 0.6; }
+  100% { opacity: 1.0; }
+}
+.fade-enter-active
+{
+  animation: fade-in 0.4s;
+}
+.fade-leave-active
+{
+  animation: fade-in 0.4s reverse;
+}
+</style>
